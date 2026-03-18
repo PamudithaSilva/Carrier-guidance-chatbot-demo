@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CareerGuide AI — Your Personal Career Mentor</title>
+    <meta
+      name="description"
+      content="Get personalized career guidance powered by AI. Explore careers, prepare for interviews, and plan your professional future."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Animated Background -->
+    <div class="bg-orbs">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+    </div>
+
+    <!-- App Container -->
+    <div class="app-container">
+      <!-- Sidebar -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <div class="logo">
+            <div class="logo-icon">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span class="logo-text">CareerGuide AI</span>
+          </div>
+          <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 12h18M3 6h18M3 18h18"/>
+            </svg>
+          </button>
+        </div>
+
+        <button class="new-chat-btn" id="newChatBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 5v14M5 12h14"/>
+          </svg>
+          New Conversation
+        </button>
+
+        <!-- Quick Topics -->
+        <div class="sidebar-section">
+          <p class="sidebar-label">Quick Topics</p>
+          <div class="topic-list">
+            <button class="topic-btn" data-prompt="Help me choose a career path that suits my interests and skills.">
+              <span class="topic-icon"></span> Career Exploration
+            </button>
+            <button class="topic-btn" data-prompt="Review my resume and give me tips to make it stand out to recruiters.">
+              <span class="topic-icon"></span> Resume & LinkedIn
+            </button>
+            <button class="topic-btn" data-prompt="Help me prepare for a job interview. What common questions should I practice?">
+              <span class="topic-icon"></span> Interview Prep
+            </button>
+            <button class="topic-btn" data-prompt="What skills should I learn to advance in my current career field?">
+              <span class="topic-icon"></span> Skill Development
+            </button>
+            <button class="topic-btn" data-prompt="I want to switch careers. How do I make a successful career transition?">
+              <span class="topic-icon"></span> Career Pivot
+            </button>
+            <button class="topic-btn" data-prompt="What are the best strategies to find and land a job quickly?">
+              <span class="topic-icon"></span> Job Search
+            </button>
+            <button class="topic-btn" data-prompt="How do I negotiate a higher salary or better benefits?">
+              <span class="topic-icon"></span> Salary Negotiation
+            </button>
+            <button class="topic-btn" data-prompt="Should I pursue a degree, certification, or bootcamp for my career goals?">
+              <span class="topic-icon"></span> Education Path
+            </button>
+          </div>
+        </div>
+
+        <div class="sidebar-footer">
+          <div class="ai-badge">
+            <div class="ai-dot"></div>
+            <span>Powered by Gemini AI</span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Chat Area -->
+      <main class="main-area">
+        <!-- Header -->
+        <header class="chat-header">
+          <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 12h18M3 6h18M3 18h18"/>
+            </svg>
+          </button>
+          <div class="header-info">
+            <h1 class="header-title">Career Guidance</h1>
+            <span class="header-status">
+              <span class="status-dot"></span> AI Ready
+            </span>
+          </div>
+          <button class="clear-btn" id="clearBtn" title="Clear conversation">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>
+            </svg>
+          </button>
+        </header>
+
+        <!-- Chat Messages Container -->
+        <div class="messages-container" id="messagesContainer">
+          <!-- Welcome Screen -->
+          <div class="welcome-screen" id="welcomeScreen">
+            <div class="welcome-icon">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h2 class="welcome-title">Welcome to CareerGuide AI</h2>
+            <p class="welcome-subtitle">
+              Your intelligent career mentor — here to help you explore paths,
+              land opportunities, and build the career you deserve.
+            </p>
+            <div class="starter-chips">
+              <button class="chip" data-prompt="I'm a fresh graduate. How do I start my career?"> I'm a fresh graduate</button>
+              <button class="chip" data-prompt="I feel stuck in my current job. What should I do?"> Feeling stuck in my job</button>
+              <button class="chip" data-prompt="How do I get into the tech industry?"> Breaking into tech</button>
+              <button class="chip" data-prompt="What are the highest paying careers in 2025?"> High-paying careers</button>
+              <button class="chip" data-prompt="How do I network effectively and build professional connections?"> Networking tips</button>
+              <button class="chip" data-prompt="I want to start my own business. Where do I begin?"> Start a business</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="input-area">
+          <div class="input-wrapper">
+            <textarea
+              id="messageInput"
+              placeholder="Ask me anything about your career..."
+              rows="1"
+              maxlength="2000"
+            ></textarea>
+            <button class="send-btn" id="sendBtn" aria-label="Send message" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 2L11 13M22 2L15 22L11 13L2 9L22 2Z"/>
+              </svg>
+            </button>
+          </div>
+          <p class="input-disclaimer">
+            CareerGuide AI can make mistakes. Verify important career decisions with a professional.
+          </p>
+        </div>
+      </main>
+    </div>
+
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
