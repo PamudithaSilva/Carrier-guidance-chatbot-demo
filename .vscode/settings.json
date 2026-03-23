@@ -1,0 +1,22 @@
+{
+  "terminal.integrated.defaultProfile.windows": "PowerShell (NoProfile)",
+  "terminal.integrated.profiles.windows": {
+    "PowerShell (NoProfile)": {
+      "source": "PowerShell",
+      "args": [
+        "-NoLogo",
+        "-NoProfile"
+      ]
+    }
+  },
+  "terminal.integrated.automationProfile.windows": {
+    "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+    "args": [
+      "-NoLogo",
+      "-NoProfile"
+    ]
+  },
+  "terminal.integrated.cwd": "${workspaceFolder}",
+  "terminal.integrated.enablePersistentSessions": false,
+  "terminal.integrated.shellIntegration.enabled": false
+}
