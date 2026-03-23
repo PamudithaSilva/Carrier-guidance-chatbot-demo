@@ -1,0 +1,127 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run backend server",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"start"
+			],
+			"isBackground": true
+		},
+		{
+			"label": "Install backend deps",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"--prefix",
+				"backend",
+				"install"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Install backend deps (cd)",
+			"type": "shell",
+			"command": "Set-Location .\\backend; npm install",
+			"isBackground": false
+		},
+		{
+			"label": "Start backend server (cd)",
+			"type": "shell",
+			"command": "Set-Location .\\backend; npm start",
+			"isBackground": true
+		},
+		{
+			"label": "Diagnose Gemini call",
+			"type": "shell",
+			"command": "Set-Location .\\backend; node -e \"require('dotenv').config(); const {GoogleGenerativeAI}=require('@google/generative-ai'); (async()=>{ try { const genAI=new GoogleGenerativeAI(process.env.GEMINI_API_KEY); const model=genAI.getGenerativeModel({model:'gemini-1.5-flash'}); const r=await model.generateContent('Say hello in one sentence.'); console.log(r.response.text()); } catch(e){ console.error('DIAG_ERROR:', e.message); if(e.stack) console.error(e.stack); } })();\"",
+			"isBackground": false
+		},
+		{
+			"label": "Diagnose Gemini call (file)",
+			"type": "shell",
+			"command": "Set-Location .\\backend; @'\nrequire('dotenv').config();\nconst { GoogleGenerativeAI } = require('@google/generative-ai');\n\n(async () => {\n  try {\n    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);\n    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });\n    const result = await model.generateContent('Say hello in one sentence.');\n    console.log('OK:', result.response.text());\n  } catch (e) {\n    console.error('DIAG_ERROR:', e.message);\n  }\n})();\n'@ | Set-Content .\\diag.js; node .\\diag.js",
+			"isBackground": false
+		},
+		{
+			"label": "List Gemini models",
+			"type": "shell",
+			"command": "Set-Location .\\backend; @'\nrequire('dotenv').config();\nconst { GoogleGenerativeAI } = require('@google/generative-ai');\n\n(async () => {\n  try {\n    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);\n    const models = await genAI.listModels();\n    const names = (models.models || []).map(m => m.name).slice(0, 40);\n    console.log(JSON.stringify(names, null, 2));\n  } catch (e) {\n    console.error('LIST_MODELS_ERROR:', e.message);\n  }\n})();\n'@ | Set-Content .\\list-models.js; node .\\list-models.js",
+			"isBackground": false
+		},
+		{
+			"label": "Restart backend server",
+			"type": "shell",
+			"command": "Set-Location .\\backend; npm start",
+			"isBackground": true
+		},
+		{
+			"label": "Test chat endpoint",
+			"type": "shell",
+			"command": "Start-Sleep -Seconds 2; try { Invoke-RestMethod -Uri http://localhost:5000/chat -Method Post -ContentType 'application/json' -Body '{\"message\":\"Hello\",\"sessionId\":\"verify\"}' | ConvertTo-Json -Depth 6 } catch { $_.Exception.Message; if ($_.ErrorDetails) { $_.ErrorDetails.Message } }",
+			"isBackground": false
+		},
+		{
+			"label": "Test chat endpoint (valid JSON)",
+			"type": "shell",
+			"command": "$payload = @{ message = 'Hello'; sessionId = 'verify' } | ConvertTo-Json; try { Invoke-RestMethod -Uri http://localhost:5000/chat -Method Post -ContentType 'application/json' -Body $payload | ConvertTo-Json -Depth 6 } catch { $_.Exception.Message; if ($_.ErrorDetails) { $_.ErrorDetails.Message } }",
+			"isBackground": false
+		},
+		{
+			"label": "Stop node processes",
+			"type": "shell",
+			"command": "Get-Process node -ErrorAction SilentlyContinue | Stop-Process -Force",
+			"isBackground": false
+		},
+		{
+			"label": "Start backend clean",
+			"type": "shell",
+			"command": "Set-Location .\\backend; npm start",
+			"isBackground": true
+		},
+		{
+			"label": "Check chat response now",
+			"type": "shell",
+			"command": "$payload = @{ message = 'Give me one short career tip'; sessionId = 'verify2' } | ConvertTo-Json; try { $r = Invoke-RestMethod -Uri http://localhost:5000/chat -Method Post -ContentType 'application/json' -Body $payload; if ($r.reply) { 'OK'; $r.model; $r.reply } else { $r | ConvertTo-Json -Depth 6 } } catch { $_.Exception.Message; if ($_.ErrorDetails) { $_.ErrorDetails.Message } }",
+			"isBackground": false
+		},
+		{
+			"label": "Fetch live Gemini model list",
+			"type": "shell",
+			"command": "Set-Location .\\backend; $keyLine = Get-Content .env | Where-Object { $_ -like 'GEMINI_API_KEY=*' } | Select-Object -First 1; $apiKey = $keyLine.Split('=')[1]; $resp = Invoke-RestMethod -Uri (\"https://generativelanguage.googleapis.com/v1beta/models?key=\" + $apiKey) -Method Get; $resp.models | Select-Object -ExpandProperty name | Select-Object -First 30",
+			"isBackground": false
+		},
+		{
+			"label": "Fetch live Gemini model list (fixed)",
+			"type": "shell",
+			"command": "Set-Location .\\backend; $keyLine = Get-Content .env | Where-Object { $_ -like 'GEMINI_API_KEY=*' } | Select-Object -First 1; $apiKey = $keyLine.Split('=')[1]; $url = 'https://generativelanguage.googleapis.com/v1beta/models?key=' + $apiKey; $resp = Invoke-RestMethod -Uri $url -Method Get; $resp.models | Select-Object -ExpandProperty name | Select-Object -First 40",
+			"isBackground": false
+		},
+		{
+			"label": "Stop node again",
+			"type": "shell",
+			"command": "Get-Process node -ErrorAction SilentlyContinue | Stop-Process -Force",
+			"isBackground": false
+		},
+		{
+			"label": "Start backend updated",
+			"type": "shell",
+			"command": "Set-Location .\\backend; npm start",
+			"isBackground": true
+		},
+		{
+			"label": "Verify chat endpoint final",
+			"type": "shell",
+			"command": "Start-Sleep -Seconds 2; $payload = @{ message = 'Give me one short career tip'; sessionId = 'verify3' } | ConvertTo-Json; try { $r = Invoke-RestMethod -Uri http://localhost:5000/chat -Method Post -ContentType 'application/json' -Body $payload; if ($r.reply) { 'OK'; $r.model; $r.reply } else { $r | ConvertTo-Json -Depth 6 } } catch { $_.Exception.Message; if ($_.ErrorDetails) { $_.ErrorDetails.Message } }",
+			"isBackground": false
+		},
+		{
+			"label": "Verify chat via Node script",
+			"type": "shell",
+			"command": "Set-Location .\\backend; @'\nconst http = require('http');\n\nconst payload = JSON.stringify({ message: 'Give me one short career tip', sessionId: 'verify-node' });\n\nconst req = http.request(\n  {\n    hostname: 'localhost',\n    port: 5000,\n    path: '/chat',\n    method: 'POST',\n    headers: {\n      'Content-Type': 'application/json',\n      'Content-Length': Buffer.byteLength(payload),\n    },\n  },\n  (res) => {\n    let data = '';\n    res.on('data', (chunk) => (data += chunk));\n    res.on('end', () => {\n      console.log('STATUS:', res.statusCode);\n      console.log(data);\n    });\n  }\n);\n\nreq.on('error', (err) => {\n  console.error('REQUEST_ERROR:', err.message);\n});\n\nreq.write(payload);\nreq.end();\n'@ | Set-Content .\\verify-chat.js; node .\\verify-chat.js",
+			"isBackground": false
+		}
+	]
+}
